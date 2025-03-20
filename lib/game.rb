@@ -4,7 +4,7 @@ require_relative 'player'
 require_relative 'board'
 # A class for the whole connect four game that use the player and board object
 class ConnectFour
-  def initialize(player1 = Player.new, player2 = Player.new, board = Board.new)
+  def initialize(player1 = Player.new("\u2605"), player2 = Player.new("\u2665"), board = Board.new)
     @player1 = player1
     @player2 = player2
     @board = board
