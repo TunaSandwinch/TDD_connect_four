@@ -2,8 +2,10 @@
 
 # board class for connect four game
 class Board
+  attr_accessor :grid
+
   def initialize
-    @board = [
+    @grid = [
       Array.new(7) { '' },
       Array.new(7) { '' },
       Array.new(7) { '' },
