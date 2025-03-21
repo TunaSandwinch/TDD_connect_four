@@ -56,6 +56,26 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
         expect(result).to be(false)
       end
     end
+
+    context 'if the column of the input value is full' do
+      grid_val = [
+        Array.new(7) { '@' },
+        Array.new(7) { '' },
+        Array.new(7) { '' },
+        Array.new(7) { '' },
+        Array.new(7) { '' },
+        Array.new(7) { '' }
+      ]
+      let(:player1) { double('player') }
+      let(:player2) { double('player') }
+      let(:board) { double('board', grid: grid_val) }
+      subject(:game_full) { described_class.new(player1, player2, board) }
+      it 'returns false' do
+        input = 6
+        result = game_full.valid_input?(input)
+        expect(result).to be(false)
+      end
+    end
   end
 
   describe '#player_input' do
@@ -77,4 +97,25 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+
+  # describe '#horizontal_win?' do
+  #   let(:player1) { double('player') }
+  #   let(:player2) { double('player') }
+  #   grid_val = [
+  #     Array.new(7) { '' },
+  #     Array.new(7) { '' },
+  #     Array.new(7) { '' },
+  #     Array.new(7) { '' },
+  #     ['@', '@', '@', '@', '#', '#', '#'],
+  #     ['@', '#', '@', '@', '#', '#', '#']
+  #   ]
+  #   let(:board) { double('board', grid: grid_val) }
+  #   subject(:game_state) { described_class.new(player1, player2, board) }
+  #   context 'when the grid has a four consecutive horizontal player piece' do
+  #     it 'returns true' do
+  #       expect { game_state.horizontal_win?('') }.to be(true)
+  #     end
+  #   end
+  # end
 end
+# determine the exact coordinate each player turn
