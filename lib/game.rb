@@ -25,4 +25,14 @@ class ConnectFour
       puts 'Invalid Input!'
     end
   end
+
+  def y_coordinate(x_coordinate)
+    board.grid.each_with_index do |row, index|
+      return (index - 1) unless row[x_coordinate] == ''
+    end
+    5
+  end
 end
+
+test = ConnectFour.new
+puts test.y_coordinate(1)
