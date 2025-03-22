@@ -32,7 +32,18 @@ class ConnectFour
     end
     5
   end
-end
 
-test = ConnectFour.new
-puts test.y_coordinate(1)
+  def horizontal_win?(y_coordinate, piece)
+    value = 0
+    board.grid[y_coordinate].each do |item|
+      return true if value == 4
+
+      if item == piece
+        value += 1
+      else
+        value = 0
+      end
+    end
+    false
+  end
+end
