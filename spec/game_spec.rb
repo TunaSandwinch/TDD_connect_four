@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require_relative '../lib/game'
-require_relative '../lib/board'
 
 describe ConnectFour do # rubocop:disable Metrics/BlockLength
   subject(:game) { described_class.new }
@@ -112,7 +111,7 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  describe 'y_coordinate' do # rubocop:disable Metrics/BlockLength
+  describe '#y_coordinate' do # rubocop:disable Metrics/BlockLength
     context 'when board is empty' do
       let(:player1) { double('player') }
       let(:player2) { double('player') }
@@ -167,24 +166,83 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  # describe '#horizontal_win?' do
-  #   let(:player1) { double('player') }
-  #   let(:player2) { double('player') }
-  #   grid_val = [
-  #     Array.new(7) { '' },
-  #     Array.new(7) { '' },
-  #     Array.new(7) { '' },
-  #     Array.new(7) { '' },
-  #     ['@', '@', '@', '@', '#', '#', '#'],
-  #     ['@', '#', '@', '@', '#', '#', '#']
-  #   ]
-  #   let(:board) { double('board', grid: grid_val) }
-  #   subject(:game_state) { described_class.new(player1, player2, board) }
-  #   context 'when the grid has a four consecutive horizontal player piece' do
-  #     it 'returns true' do
-  #       expect { game_state.horizontal_win?('') }.to be(true)
-  #     end
-  #   end
-  # end
+  describe '#horizontal_win?' do # rubocop:disable Metrics/BlockLength
+    let(:player1) { double('player') }
+    let(:player2) { double('player') }
+    grid_val = [
+      Array.new(7) { '' },
+      Array.new(7) { '' },
+      Array.new(7) { '' },
+      ['#', '#', '#', '#', '@', '@', '@'],
+      ['#', '@', '@', '@', '@', '#', '#'],
+      ['@', '#', '@', '@', '#', '#', '#']
+    ]
+    let(:board) { double('board', grid: grid_val) }
+    subject(:game_state) { described_class.new(player1, player2, board) }
+
+    context 'when the grid has a four consecutive horizontal player piece' do
+      it 'returns true' do
+        y_coordinate = 3
+        player_piece = '#'
+        result = game_state.horizontal_win?(y_coordinate, player_piece)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when the four consecutive horizontal player piece is in between the other piece' do
+      it 'returns true' do
+        y_coordinate = 4
+        player_piece = '@'
+        result = game_state.horizontal_win?(y_coordinate, player_piece)
+        expect(result).to be(true)
+      end
+    end
+
+    context 'when there is no four consecutive horizontal player piece' do
+      it 'returns false' do
+        y_coordinate = 5
+        player_piece = '#'
+        result = game_state.horizontal_win?(y_coordinate, player_piece)
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#vertical_win?' do # rubocop:disable Metrics/BlockLength
+    let(:player1) { double('player') }
+    let(:player2) { double('player') }
+    grid_val = [
+      ['X', 'X', 'X', '#', '#', 'X', '#'],
+      ['X', '#', 'X', 'X', 'X', '#', '#'],
+      ['#', '#', '#', '#', 'X', 'X', '#'],
+      ['#', '#', '#', 'X', 'X', 'X', '#'],
+      ['#', '#', '#', '#', 'X', 'X', 'X'],
+      ['#', 'X', '#', 'X', 'X', 'X', 'X']
+    ]
+    let(:board) { double('board', grid: grid_val) }
+    subject(:game_state) { described_class.new(player1, player2, board) }
+    context 'when there is 4 consecutive vertical player piece in the board' do
+      it 'returns true' do
+        x_coordinate = 0
+        player_piece = '#'
+        result = game_state.vertical_win?(x_coordinate, player_piece)
+        expect(result).to be(true)
+      end
+
+      it 'returns true in a full column' do
+        x_coordinate = 6
+        player_piece = '#'
+        result = game_state.vertical_win?(x_coordinate, player_piece)
+        expect(result).to be(true)
+      end
+    end
+    context 'when there is no 4 consecutive vertical player piece in the board' do
+      it 'return false' do
+        x_coordinate = 3
+        player_piece = '#'
+        result = game_state.vertical_win?(x_coordinate, player_piece)
+        expect(result).to be(false)
+      end
+    end
+  end
 end
-# determine the exact coordinate each player turn
