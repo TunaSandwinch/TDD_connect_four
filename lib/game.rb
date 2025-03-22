@@ -20,7 +20,7 @@ class ConnectFour
     loop do
       puts 'enter a number from 1-7'
       input = gets.chomp
-      return input_.to_i if valid_input?(input)
+      return (input.to_i - 1) if valid_input?(input)
 
       puts 'Invalid Input!'
     end
