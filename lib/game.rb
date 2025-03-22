@@ -33,17 +33,32 @@ class ConnectFour
     5
   end
 
-  def horizontal_win?(y_coordinate, piece)
+  def horizontal_win?(row, piece)
     value = 0
-    board.grid[y_coordinate].each do |item|
-      return true if value == 4
-
+    board.grid[row].each do |item|
       if item == piece
         value += 1
       else
         value = 0
       end
+      return true if value == 4
+    end
+    false
+  end
+
+  def vertical_win?(column, piece)
+    value = 0
+    (0..5).each do |row|
+      if board.grid[row][column] == piece
+        value += 1
+      else
+        value = 0
+      end
+      return true if value == 4
     end
     false
   end
 end
+
+# test = ConnectFour.new
+# p test.vertical_win?(0, '#')
