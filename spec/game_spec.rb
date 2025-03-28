@@ -275,6 +275,36 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     end
   end
 
+  describe '#left_diagonal_start' do
+    it 'returns [5, 5] if row = 4 and column = 4' do
+      row = 4
+      column = 4
+      result = game.left_diagonal_start(row, column)
+      expect(result).to eql([5, 5])
+    end
+
+    it 'returns [5, 6] if row = 5 and column = 6' do
+      row = 5
+      column = 6
+      result = game.left_diagonal_start(row, column)
+      expect(result).to eql([5, 6])
+    end
+
+    it 'returns [5, 0] if row = 5 and column = 0' do
+      row = 5
+      column = 0
+      result = game.left_diagonal_start(row, column)
+      expect(result).to eql([5, 0])
+    end
+
+    it 'returns [5, 4] if row = 2 and column = 1' do
+      row = 2
+      column = 1
+      result = game.left_diagonal_start(row, column)
+      expect(result).to eql([5, 4])
+    end
+  end
+
   # describe '#diagonal_win?' do
   #   let(:player1) { double('player') }
   #   let(:player2) { double('player') }
