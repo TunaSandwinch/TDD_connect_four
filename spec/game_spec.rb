@@ -111,7 +111,7 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  describe '#y_coordinate' do # rubocop:disable Metrics/BlockLength
+  describe '#row_num' do # rubocop:disable Metrics/BlockLength
     context 'when board is empty' do
       let(:player1) { double('player') }
       let(:player2) { double('player') }
@@ -119,18 +119,18 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
       let(:board) { double('board', grid: grid_val) }
       subject(:game_coordinate) { described_class.new(player1, player2, board) }
 
-      it 'returns 5 if x_coordinate = 0' do
-        result = game_coordinate.y_coordinate(0)
+      it 'returns 5 if column_num = 0' do
+        result = game_coordinate.row_num(0)
         expect(result).to eq(5)
       end
 
-      it 'returns 5 if x_coordinate = 3' do
-        result = game_coordinate.y_coordinate(3)
+      it 'returns 5 if column_num = 3' do
+        result = game_coordinate.row_num(3)
         expect(result).to eq(5)
       end
 
-      it 'return 5 if x_coordinate = 6' do
-        result = game_coordinate.y_coordinate(6)
+      it 'return 5 if column_num = 6' do
+        result = game_coordinate.row_num(6)
         expect(result).to eq(5)
       end
     end
@@ -149,18 +149,18 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
       let(:board) { double('board', grid: grid_val) }
       subject(:game_coordinate) { described_class.new(player1, player2, board) }
 
-      it 'returns 2 if x_coordinate = 0' do
-        result = game_coordinate.y_coordinate(0)
+      it 'returns 2 if column_num = 0' do
+        result = game_coordinate.row_num(0)
         expect(result).to eq(2)
       end
 
-      it 'returns 2 if x_coordinate = 3' do
-        result = game_coordinate.y_coordinate(3)
+      it 'returns 2 if column_num = 3' do
+        result = game_coordinate.row_num(3)
         expect(result).to eq(2)
       end
 
-      it 'returns 2 if x_coordinate = 6' do
-        result = game_coordinate.y_coordinate(6)
+      it 'returns 2 if column_num = 6' do
+        result = game_coordinate.row_num(6)
         expect(result).to eq(2)
       end
     end
@@ -245,4 +245,116 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
       end
     end
   end
+  describe '#right_diagonal_start' do
+    it 'returns [5, 3] if row = 4 and column = 4  ' do
+      row = 4
+      column = 4
+      result = game.right_diagonal_start(row, column)
+      expect(result).to eql([5, 3])
+    end
+
+    it 'returns [5, 6] if row = 5 and column = 6' do
+      row = 5
+      column = 6
+      result = game.right_diagonal_start(row, column)
+      expect(result).to eql([5, 6])
+    end
+
+    it 'returns [5, 0] if row = 5 and column = 0' do
+      row = 5
+      column = 0
+      result = game.right_diagonal_start(row, column)
+      expect(result).to eql([5, 0])
+    end
+
+    it 'returns [3, 0] if row = 2 and column = 1' do
+      row = 2
+      column = 1
+      result = game.right_diagonal_start(row, column)
+      expect(result).to eql([3, 0])
+    end
+  end
+
+  # describe '#diagonal_win?' do
+  #   let(:player1) { double('player') }
+  #   let(:player2) { double('player') }
+  #   let(:board) { double('board', grid: grid_val) }
+  #   subject(:game_state) { described_class.new(player1, player2, board) }
+
+  #   context 'when there is 4 consecutive diagonal player piece' do
+  #     let(:grid_val) do
+  #       [
+  #         ['X', 'X', 'X', '#', 'X', 'X', 'X'],
+  #         ['X', 'X', '#', 'X', 'X', 'X', 'X'],
+  #         ['X', '#', 'X', 'X', 'X', 'X', 'X'],
+  #         ['#', 'X', 'X', 'X', 'X', 'X', 'X'],
+  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X']
+  #       ]
+  #     end
+  #     it 'returns true if the diagonal is located at coordinate [0, 3]' do
+  #       result = game_state.diagonal_win?('#')
+  #       expect(result).to be(true)
+  #     end
+  #     let(:grid_val) do
+  #       [
+  #         ['X', 'X', 'X', 'X', '#', 'X', 'X'],
+  #         ['X', 'X', 'X', '#', 'X', 'X', 'X'],
+  #         ['X', 'X', '#', 'X', 'X', 'X', 'X'],
+  #         ['X', '#', 'X', 'X', 'X', 'X', 'X'],
+  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X']
+  #       ]
+  #     end
+  #     it 'returns true if the diagonal is located at coordinate [0, 4]' do
+  #       result = game_state.diagonal_win?('#')
+  #       expect(result).to be(true)
+  #     end
+  #     let(:grid_val) do
+  #       [
+  #         ['X', 'X', 'X', 'X', 'X', 'X', '#'],
+  #         ['X', 'X', 'X', 'X', 'X', '#', 'X'],
+  #         ['X', 'X', 'X', 'X', '#', 'X', 'X'],
+  #         ['X', 'X', 'X', '#', 'X', 'X', 'X'],
+  #         ['X', 'X', '#', 'X', 'X', 'X', 'X'],
+  #         ['X', '#', 'X', 'X', 'X', 'X', 'X']
+  #       ]
+  #     end
+  #     it 'returns true if the diagonal is located at coordinate [1, 5]' do
+  #       result = game_state.diagonal_win?('#')
+  #       expect(result).to be(true)
+  #     end
+  #     let(:grid_val) do
+  #       [
+  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+  #         ['X', 'X', 'X', 'X', 'X', 'X', '#'],
+  #         ['X', 'X', 'X', 'X', 'X', '#', 'X'],
+  #         ['X', 'X', 'X', 'X', '#', 'X', 'X'],
+  #         ['X', 'X', 'X', '#', 'X', 'X', 'X'],
+  #         ['X', 'X', '#', 'X', 'X', 'X', 'X']
+  #       ]
+  #     end
+  #     it 'returns true if the diagonal is located at coordinate [2, 5]' do
+  #       result = game_state.diagonal_win?('#')
+  #       expect(result).to be(true)
+  #     end
+  #   end
+
+  #   context 'if there is no 4 consecutive diagonal player piece' do
+  #     let(:grid_val) do
+  #       [
+  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+  #         ['X', 'X', 'X', 'X', 'X', 'X', '#'],
+  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+  #         ['X', 'X', 'X', 'X', '#', 'X', 'X'],
+  #         ['X', 'X', 'X', '#', 'X', 'X', 'X'],
+  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X']
+  #       ]
+  #     end
+  #     it 'returns false' do
+  #       result = game_state.diagonal_win?('#')
+  #       expect(result).to be(false)
+  #     end
+  #   end
+  # end
 end
