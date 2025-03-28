@@ -26,9 +26,9 @@ class ConnectFour
     end
   end
 
-  def y_coordinate(x_coordinate)
+  def row_num(column_num)
     board.grid.each_with_index do |row, index|
-      return (index - 1) unless row[x_coordinate] == ''
+      return (index - 1) unless row[column_num] == ''
     end
     5
   end
@@ -58,7 +58,20 @@ class ConnectFour
     end
     false
   end
-end
 
+  def right_diagonal_start(row, columm)
+    return [row, columm] if row >= 5 || columm <= 0
+
+    right_diagonal_start(row + 1, columm - 1)
+  end
+
+  # def diagonal_win?(row, column, piece)
+  #   value = 0
+  #   count = lamda do |x, y, z|
+  #     return 1 unless
+  #   end
+  # end
+end
+# TO DO write method for diagonal_win? method
 # test = ConnectFour.new
 # p test.vertical_win?(0, '#')
