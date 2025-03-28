@@ -59,10 +59,16 @@ class ConnectFour
     false
   end
 
-  def right_diagonal_start(row, columm)
-    return [row, columm] if row >= 5 || columm <= 0
+  def right_diagonal_start(row, column)
+    return [row, column] if row >= 5 || column <= 0
 
-    right_diagonal_start(row + 1, columm - 1)
+    right_diagonal_start(row + 1, column - 1)
+  end
+
+  def left_diagonal_start(row, column)
+    return [row, column] if row >= 5 || column >= 6
+
+    left_diagonal_start(row + 1, column + 1)
   end
 
   # def diagonal_win?(row, column, piece)
