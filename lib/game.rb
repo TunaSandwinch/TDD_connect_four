@@ -71,13 +71,18 @@ class ConnectFour
     left_diagonal_start(row + 1, column + 1)
   end
 
-  # def diagonal_win?(row, column, piece)
-  #   value = 0
-  #   count = lamda do |x, y, z|
-  #     return 1 unless
-  #   end
-  # end
+  def right_diagonal_count(row, column, piece)
+    value = 0
+    count = lambda do |curr_row, curr_column|
+      return 1 if curr_row.negative? || curr_column > 6
+
+      value = 0 unless piece == board.grid[curr_row][curr_column]
+      value += 1
+      count.call(curr_row - 1, curr_column + 1)
+    end
+    count.call(row, column)
+    value
+  end
 end
-# TO DO write method for diagonal_win? method
 # test = ConnectFour.new
 # p test.vertical_win?(0, '#')
