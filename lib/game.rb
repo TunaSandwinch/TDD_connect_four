@@ -73,16 +73,29 @@ class ConnectFour
 
   def right_diagonal_count(row, column, piece)
     value = 0
-    count = lambda do |curr_row, curr_column|
-      return 1 if curr_row.negative? || curr_column > 6
+    until row.negative? || column > 6
+      return value if value == 4
 
-      value = 0 unless piece == board.grid[curr_row][curr_column]
       value += 1
-      count.call(curr_row - 1, curr_column + 1)
+      value = 0 unless board.grid[row][column] == piece
+      row -= 1
+      column += 1
     end
-    count.call(row, column)
+    value
+  end
+
+  def left_diagonal_count(row, column, piece)
+    value = 0
+    until row.negative? || column.negative?
+      return value if value == 4
+
+      value += 1
+      value = 0 unless board.grid[row][column] == piece
+      row -= 1
+      column -= 1
+    end
     value
   end
 end
 # test = ConnectFour.new
-# p test.vertical_win?(0, '#')
+# p test.right_diagonal_count(5, 1, '#')
