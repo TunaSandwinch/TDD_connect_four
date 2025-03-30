@@ -26,9 +26,9 @@ class ConnectFour
     end
   end
 
-  def row_num(column_num)
-    board.grid.each_with_index do |row, index|
-      return (index - 1) unless row[column_num] == ''
+  def row(column)
+    board.grid.each_with_index do |curr_row, index|
+      return (index - 1) unless curr_row[column] == ''
     end
     5
   end
