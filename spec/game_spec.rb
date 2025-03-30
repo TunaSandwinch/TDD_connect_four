@@ -111,7 +111,7 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     end
   end
 
-  describe '#row_num' do # rubocop:disable Metrics/BlockLength
+  describe '#row' do # rubocop:disable Metrics/BlockLength
     context 'when board is empty' do
       let(:player1) { double('player') }
       let(:player2) { double('player') }
@@ -120,17 +120,17 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
       subject(:game_coordinate) { described_class.new(player1, player2, board) }
 
       it 'returns 5 if column_num = 0' do
-        result = game_coordinate.row_num(0)
+        result = game_coordinate.row(0)
         expect(result).to eq(5)
       end
 
       it 'returns 5 if column_num = 3' do
-        result = game_coordinate.row_num(3)
+        result = game_coordinate.row(3)
         expect(result).to eq(5)
       end
 
       it 'return 5 if column_num = 6' do
-        result = game_coordinate.row_num(6)
+        result = game_coordinate.row(6)
         expect(result).to eq(5)
       end
     end
@@ -150,17 +150,17 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
       subject(:game_coordinate) { described_class.new(player1, player2, board) }
 
       it 'returns 2 if column_num = 0' do
-        result = game_coordinate.row_num(0)
+        result = game_coordinate.row(0)
         expect(result).to eq(2)
       end
 
       it 'returns 2 if column_num = 3' do
-        result = game_coordinate.row_num(3)
+        result = game_coordinate.row(3)
         expect(result).to eq(2)
       end
 
       it 'returns 2 if column_num = 6' do
-        result = game_coordinate.row_num(6)
+        result = game_coordinate.row(6)
         expect(result).to eq(2)
       end
     end
@@ -311,7 +311,7 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     let(:board) { double('board', grid: grid_val) }
     subject(:game_status) { described_class.new(player1, player2, board) }
 
-    context 'if the board has 4 consecutive left diagonal player piece' do
+    context 'if the board has 4 consecutive right diagonal player piece' do
       let(:grid_val) do
         [
           ['X', 'X', 'X', 'X', 'X', 'X', '#'],
@@ -323,12 +323,12 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
         ]
       end
       it 'returns 4' do
-        result = game_status.right_diagonal_count(3, 3, '#')
+        result = game_status.right_diagonal_count(5, 1, '#')
         expect(result).to eql(4)
       end
     end
 
-    context 'if there is no consecutive 4 left diagonal player piece' do
+    context 'if there is no consecutive 4 right diagonal player piece' do
       let(:grid_val) do
         [
           ['X', 'X', 'X', 'X', 'X', 'X', '#'],
@@ -340,10 +340,64 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
         ]
       end
       it 'returns a value less than 4' do
-        result = game_status.right_diagonal_count(3, 3, '#')
+        result = game_status.right_diagonal_count(5, 1, '#')
         expect(result).to be < 4
       end
     end
+  end
+
+  describe '#left_diagonal_count' do # rubocop:disable Metrics/BlockLength
+    let(:player1) { double('player') }
+    let(:player2) { double('player') }
+    let(:board) { double('board', grid: grid_val) }
+    subject(:game_status) { described_class.new(player1, player2, board) }
+    context 'if there is 4 consecutive right diagonal player piece' do
+      let(:grid_val) do
+        [
+          ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+          ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+          ['X', 'X', '#', 'X', 'X', 'X', 'X'],
+          ['X', 'X', 'X', '#', 'X', 'X', 'X'],
+          ['X', 'X', 'X', 'X', '#', 'X', 'X'],
+          ['X', 'X', 'X', 'X', 'X', '#', 'X']
+        ]
+      end
+      it 'returns 4' do
+        row = 5
+        column = 5
+        piece = '#'
+        result = game_status.left_diagonal_count(row, column, piece)
+        expect(result).to eql(4)
+      end
+    end
+
+    context 'when there is no 4 consecutive left diagonal player piece' do
+      let(:grid_val) do
+        [
+          ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+          ['X', '#', 'X', 'X', 'X', 'X', 'X'],
+          ['X', 'X', '#', 'X', 'X', 'X', 'X'],
+          ['X', 'X', 'X', '#', 'X', 'X', 'X'],
+          ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
+          ['X', 'X', 'X', 'X', 'X', '#', 'X']
+        ]
+      end
+      it 'returns a value less than 4' do
+        row = 5
+        column = 5
+        piece = '#'
+        result = game_status.left_diagonal_count(row, column, piece)
+        expect(result).to be < 4
+      end
+    end
+
+    # describe '#diagonal_win?' do
+    #   context 'if there is a consecutive right diagonal player piece' do
+    #     it 'returns true' do
+    #       allow(game).to recieve(:left_diagonal_start).with()
+    #     end
+    #   end
+    # end
   end
 
   # describe '#diagonal_win?' do
