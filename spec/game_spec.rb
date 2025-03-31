@@ -390,96 +390,61 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
         expect(result).to be < 4
       end
     end
-
-    # describe '#diagonal_win?' do
-    #   context 'if there is a consecutive right diagonal player piece' do
-    #     it 'returns true' do
-    #       allow(game).to recieve(:left_diagonal_start).with()
-    #     end
-    #   end
-    # end
   end
 
-  # describe '#diagonal_win?' do
-  #   let(:player1) { double('player') }
-  #   let(:player2) { double('player') }
-  #   let(:board) { double('board', grid: grid_val) }
-  #   subject(:game_state) { described_class.new(player1, player2, board) }
+  describe '#diagonal_win?' do
+    context 'when method is called' do
+      before do
+        allow(game).to receive(:left_diagonal_start).and_return({ row: 5, column: 5 })
+        allow(game).to receive(:right_diagonal_start).and_return({ row: 5, column: 1 })
+      end
+      it 'calls left_diagonal_start once' do
+        expect(game).to receive(:left_diagonal_start).once
+        game.diagonal_win?(3, 3, '#')
+      end
 
-  #   context 'when there is 4 consecutive diagonal player piece' do
-  #     let(:grid_val) do
-  #       [
-  #         ['X', 'X', 'X', '#', 'X', 'X', 'X'],
-  #         ['X', 'X', '#', 'X', 'X', 'X', 'X'],
-  #         ['X', '#', 'X', 'X', 'X', 'X', 'X'],
-  #         ['#', 'X', 'X', 'X', 'X', 'X', 'X'],
-  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X']
-  #       ]
-  #     end
-  #     it 'returns true if the diagonal is located at coordinate [0, 3]' do
-  #       result = game_state.diagonal_win?('#')
-  #       expect(result).to be(true)
-  #     end
-  #     let(:grid_val) do
-  #       [
-  #         ['X', 'X', 'X', 'X', '#', 'X', 'X'],
-  #         ['X', 'X', 'X', '#', 'X', 'X', 'X'],
-  #         ['X', 'X', '#', 'X', 'X', 'X', 'X'],
-  #         ['X', '#', 'X', 'X', 'X', 'X', 'X'],
-  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X']
-  #       ]
-  #     end
-  #     it 'returns true if the diagonal is located at coordinate [0, 4]' do
-  #       result = game_state.diagonal_win?('#')
-  #       expect(result).to be(true)
-  #     end
-  #     let(:grid_val) do
-  #       [
-  #         ['X', 'X', 'X', 'X', 'X', 'X', '#'],
-  #         ['X', 'X', 'X', 'X', 'X', '#', 'X'],
-  #         ['X', 'X', 'X', 'X', '#', 'X', 'X'],
-  #         ['X', 'X', 'X', '#', 'X', 'X', 'X'],
-  #         ['X', 'X', '#', 'X', 'X', 'X', 'X'],
-  #         ['X', '#', 'X', 'X', 'X', 'X', 'X']
-  #       ]
-  #     end
-  #     it 'returns true if the diagonal is located at coordinate [1, 5]' do
-  #       result = game_state.diagonal_win?('#')
-  #       expect(result).to be(true)
-  #     end
-  #     let(:grid_val) do
-  #       [
-  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-  #         ['X', 'X', 'X', 'X', 'X', 'X', '#'],
-  #         ['X', 'X', 'X', 'X', 'X', '#', 'X'],
-  #         ['X', 'X', 'X', 'X', '#', 'X', 'X'],
-  #         ['X', 'X', 'X', '#', 'X', 'X', 'X'],
-  #         ['X', 'X', '#', 'X', 'X', 'X', 'X']
-  #       ]
-  #     end
-  #     it 'returns true if the diagonal is located at coordinate [2, 5]' do
-  #       result = game_state.diagonal_win?('#')
-  #       expect(result).to be(true)
-  #     end
-  #   end
+      it 'calls right_diagonal_start once' do
+        expect(game).to receive(:right_diagonal_start).once
+        game.diagonal_win?(3, 3, '#')
+      end
 
-  #   context 'if there is no 4 consecutive diagonal player piece' do
-  #     let(:grid_val) do
-  #       [
-  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-  #         ['X', 'X', 'X', 'X', 'X', 'X', '#'],
-  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-  #         ['X', 'X', 'X', 'X', '#', 'X', 'X'],
-  #         ['X', 'X', 'X', '#', 'X', 'X', 'X'],
-  #         ['X', 'X', 'X', 'X', 'X', 'X', 'X']
-  #       ]
-  #     end
-  #     it 'returns false' do
-  #       result = game_state.diagonal_win?('#')
-  #       expect(result).to be(false)
-  #     end
-  #   end
-  # end
+      it 'calls left_diagonal_count once' do
+        expect(game).to receive(:left_diagonal_count).once
+        game.diagonal_win?(0, 0, '#')
+      end
+
+      it 'calls right_diagonal_count once' do
+        expect(game).to receive(:right_diagonal_count).once
+        game.diagonal_win?(2, 4, '#')
+      end
+    end
+  end
+
+  context 'if a player won in a right diagonal' do
+    it 'returns true' do
+      allow(game).to receive(:left_diagonal_start).and_return({ row: 5, column: 5 })
+      allow(game).to receive(:right_diagonal_start).and_return({ row: 5, column: 1 })
+      allow(game).to receive(:right_diagonal_count).and_return(4)
+      allow(game).to receive(:left_diagonal_count).and_return(3)
+      row = 3
+      column = 3
+      piece = '#'
+      result = game.diagonal_win?(row, column, piece)
+      expect(result).to be(true)
+    end
+  end
+
+  context 'if a player won in a left diagonal' do
+    it 'returns true' do
+      allow(game).to receive(:left_diagonal_start).and_return({ row: 5, column: 5 })
+      allow(game).to receive(:right_diagonal_start).and_return({ row: 5, column: 1 })
+      allow(game).to receive(:right_diagonal_count).and_return(3)
+      allow(game).to receive(:left_diagonal_count).and_return(4)
+      row = 3
+      column = 3
+      piece = '#'
+      result = game.diagonal_win?(row, column, piece)
+      expect(result).to be(true)
+    end
+  end
 end
