@@ -96,6 +96,15 @@ class ConnectFour
     end
     value
   end
+
+  def diagonal_win?(row, column, piece)
+    left = left_diagonal_start(row, column)
+    right = right_diagonal_start(row, column)
+    right_count = right_diagonal_count(right[:row], left[:column], piece)
+    left_count = left_diagonal_count(left[:row], left[:column], piece)
+
+    right_count == 4 || left_count == 4
+  end
 end
 # test = ConnectFour.new
 # p test.right_diagonal_count(5, 1, '#')
