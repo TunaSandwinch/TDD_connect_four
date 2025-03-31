@@ -113,6 +113,10 @@ class ConnectFour
   def place_piece(row, column, piece)
     @board.grid[row][column] = piece
   end
+
+  def tie?
+    !board.grid[0].include?('')
+  end
 end
 # test = ConnectFour.new
 # p test.right_diagonal_count(5, 1, '#')
