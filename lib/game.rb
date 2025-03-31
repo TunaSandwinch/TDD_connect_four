@@ -13,7 +13,7 @@ class ConnectFour
   end
 
   def valid_input?(input)
-    input.to_i.between?(1, 7) && (board.grid[0][input.to_i] == ' ')
+    input.to_i.between?(1, 7) && (board.grid[input][input.to_i] == ' ')
   end
 
   def player_input
@@ -121,8 +121,8 @@ class ConnectFour
   # def play
   #   current_player = player1
   #   loop do
-  #     puts "player #{current_player.piece}"
   #     board.show_board
+  #     puts "player #{current_player.piece} 's turn"
   #     column = player_input
   #     row = row(column)
   #     place_piece(row, column, current_player.piece)
@@ -136,7 +136,7 @@ class ConnectFour
   #       break
   #     end
 
-  #     current_player == player1 ? current_player = player2 : player1
+  #     current_player = current_player == player1 ? player2 : player1
   #   end
   # end
 end
