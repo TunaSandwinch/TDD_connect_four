@@ -13,7 +13,7 @@ class ConnectFour
   end
 
   def valid_input?(input)
-    input.to_i.between?(1, 7) && (board.grid[0][input.to_i] == '')
+    input.to_i.between?(1, 7) && (board.grid[0][input.to_i] == ' ')
   end
 
   def player_input
@@ -28,7 +28,7 @@ class ConnectFour
 
   def row(column)
     board.grid.each_with_index do |curr_row, index|
-      return (index - 1) unless curr_row[column] == ''
+      return (index - 1) unless curr_row[column] == ' '
     end
     5
   end
@@ -115,8 +115,30 @@ class ConnectFour
   end
 
   def tie?
-    !board.grid[0].include?('')
+    !board.grid[0].include?(' ')
   end
+
+  # def play
+  #   current_player = player1
+  #   loop do
+  #     puts "player #{current_player.piece}"
+  #     board.show_board
+  #     column = player_input
+  #     row = row(column)
+  #     place_piece(row, column, current_player.piece)
+  #     board.show_board
+
+  #     if player_win?(row, column, current_player.piece)
+  #       puts "player #{current_player.piece} won!"
+  #       break
+  #     elsif tie?
+  #       puts 'its a tie!'
+  #       break
+  #     end
+
+  #     current_player == player1 ? current_player = player2 : player1
+  #   end
+  # end
 end
 # test = ConnectFour.new
 # p test.right_diagonal_count(5, 1, '#')
