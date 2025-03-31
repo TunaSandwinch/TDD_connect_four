@@ -6,22 +6,20 @@ class Board
 
   def initialize
     @grid = [
-      Array.new(7) { '' },
-      Array.new(7) { '' },
-      Array.new(7) { '' },
-      Array.new(7) { '' },
-      Array.new(7) { '' },
-      Array.new(7) { '' }
+      Array.new(7) { ' ' },
+      Array.new(7) { ' ' },
+      Array.new(7) { ' ' },
+      Array.new(7) { ' ' },
+      Array.new(7) { ' ' },
+      Array.new(7) { ' ' }
     ]
   end
-
-  private
 
   def show_board
     system('clear') || system('cls') # Clears the terminal for a cleaner display
 
     @grid.each do |row|
-      puts "| #{row.join(' | ')} |"
+      puts '| ' + row.join(' | ') + ' |'
     end
     puts '  1   2   3   4   5   6   7  ' # Column numbers for guidance
   end
