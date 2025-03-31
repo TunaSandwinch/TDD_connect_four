@@ -4,7 +4,7 @@ require_relative 'player'
 require_relative 'board'
 # A class for the whole connect four game that use the player and board object
 class ConnectFour
-  attr_reader :player1, :player2, :board
+  attr_accessor :player1, :player2, :board
 
   def initialize(player1 = Player.new("\u2605"), player2 = Player.new("\u2665"), board = Board.new)
     @player1 = player1
@@ -104,6 +104,14 @@ class ConnectFour
     left_count = left_diagonal_count(left[:row], left[:column], piece)
 
     right_count == 4 || left_count == 4
+  end
+
+  def player_win?(row, column, piece)
+    horizontal_win?(row, piece) || vertical_win?(column, piece) || diagonal_win?(row, column, piece)
+  end
+
+  def place_piece(row, column, piece)
+    @board.grid[row][column] = piece
   end
 end
 # test = ConnectFour.new
