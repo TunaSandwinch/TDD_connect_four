@@ -528,4 +528,41 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
       expect(game.board.grid[row][column]).to eq(piece)
     end
   end
+
+  describe '#tie?' do # rubocop:disable Metrics/BlockLength
+    context 'when its a tie' do
+      grid_val = [
+        Array.new(7) { '@' },
+        Array.new(7) { '' },
+        Array.new(7) { '' },
+        Array.new(7) { '' },
+        Array.new(7) { '' },
+        Array.new(7) { '' }
+      ]
+      let(:player1) { double('player') }
+      let(:player2) { double('player') }
+      let(:board) { double('board', grid: grid_val) }
+      subject(:game_state) { described_class.new(player1, player2, board) }
+      it 'returns true' do
+        expect(game_state.tie?).to be(true)
+      end
+    end
+    context 'when its not a tie' do
+      grid_val = [
+        Array.new(7) { '' },
+        Array.new(7) { '@' },
+        Array.new(7) { '@' },
+        Array.new(7) { '@' },
+        Array.new(7) { '@' },
+        Array.new(7) { '@' }
+      ]
+      let(:player1) { double('player') }
+      let(:player2) { double('player') }
+      let(:board) { double('board', grid: grid_val) }
+      subject(:game_state) { described_class.new(player1, player2, board) }
+      it 'returns false' do
+        expect(game_state.tie?).to be(false)
+      end
+    end
+  end
 end
