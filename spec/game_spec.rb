@@ -447,4 +447,85 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
       expect(result).to be(true)
     end
   end
+
+  describe '#player_win?' do # rubocop:disable Metrics/BlockLength
+    describe 'when called' do
+      it 'calls horizontal_win? once' do
+        expect(game).to receive(:horizontal_win?).once
+        game.player_win?(3, 3, '#')
+      end
+
+      it 'calls vertical_win? once' do
+        expect(game).to receive(:vertical_win?).once
+        game.player_win?(3, 3, '#')
+      end
+
+      it 'calls diagonal_win? once' do
+        expect(game).to receive(:diagonal_win?).once
+        game.player_win?(3, 3, '#')
+      end
+    end
+
+    describe 'if a player won horizontally' do
+      it 'returns true' do
+        allow(game).to receive(:horizontal_win?).and_return(true)
+        allow(game).to receive(:vertical_win?).and_return(false)
+        allow(game).to receive(:diagonal_win?).and_return(false)
+        row = 3
+        column = 3
+        piece = '#'
+        outcome = game.player_win?(row, column, piece)
+        expect(outcome).to be(true)
+      end
+    end
+
+    describe 'if a player won vertically' do
+      it 'returns true' do
+        allow(game).to receive(:horizontal_win?).and_return(false)
+        allow(game).to receive(:vertical_win?).and_return(true)
+        allow(game).to receive(:diagonal_win?).and_return(false)
+        row = 3
+        column = 3
+        piece = '#'
+        outcome = game.player_win?(row, column, piece)
+        expect(outcome).to be(true)
+      end
+    end
+
+    describe 'if a player won diagonally' do
+      it 'returns true' do
+        allow(game).to receive(:horizontal_win?).and_return(false)
+        allow(game).to receive(:vertical_win?).and_return(false)
+        allow(game).to receive(:diagonal_win?).and_return(true)
+        row = 3
+        column = 3
+        piece = '#'
+        outcome = game.player_win?(row, column, piece)
+        expect(outcome).to be(true)
+      end
+    end
+
+    describe 'if a player move did not make a winning condition' do
+      it 'returns true' do
+        allow(game).to receive(:horizontal_win?).and_return(false)
+        allow(game).to receive(:vertical_win?).and_return(false)
+        allow(game).to receive(:diagonal_win?).and_return(false)
+        row = 3
+        column = 3
+        piece = '#'
+        outcome = game.player_win?(row, column, piece)
+        expect(outcome).to be(false)
+      end
+    end
+  end
+
+  describe '#place_piece' do
+    it 'place the piece on the board' do
+      row = 3
+      column = 3
+      piece = '#'
+      game.place_piece(row, column, piece)
+      expect(game.board.grid[row][column]).to eq(piece)
+    end
+  end
 end
