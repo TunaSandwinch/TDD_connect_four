@@ -118,27 +118,16 @@ class ConnectFour
     !board.grid[0].include?(' ')
   end
 
-  # def play
-  #   current_player = player1
-  #   loop do
-  #     board.show_board
-  #     puts "player #{current_player.piece} 's turn"
-  #     column = player_input
-  #     row = row(column)
-  #     place_piece(row, column, current_player.piece)
-  #     board.show_board
-
-  #     if player_win?(row, column, current_player.piece)
-  #       puts "player #{current_player.piece} won!"
-  #       break
-  #     elsif tie?
-  #       puts 'its a tie!'
-  #       break
-  #     end
-
-  #     current_player = current_player == player1 ? player2 : player1
-  #   end
-  # end
+  def game_over?(row, column, piece)
+    if player_win?(row, column, piece)
+      puts "player #{piece} won!"
+      return true
+    elsif tie?
+      puts 'its a tie!'
+      return true
+    end
+    false
+  end
 end
 # test = ConnectFour.new
 # p test.right_diagonal_count(5, 1, '#')
