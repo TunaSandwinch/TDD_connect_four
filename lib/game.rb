@@ -131,12 +131,13 @@ class ConnectFour
 
   def play
     current_player = player1
+    board.show_board
     loop do
-      board.show_board
       puts "player #{current_player.piece} 's turn"
       column = player_input
       row = row(column)
       place_piece(row, column, current_player.piece)
+      board.show_board
       break if game_over?(row, column, current_player.piece)
 
       current_player = current_player == player1 ? player2 : player1
