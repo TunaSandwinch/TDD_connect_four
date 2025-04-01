@@ -6,14 +6,14 @@ require_relative 'board'
 class ConnectFour
   attr_accessor :player1, :player2, :board
 
-  def initialize(player1 = Player.new("\u2605"), player2 = Player.new("\u2665"), board = Board.new)
+  def initialize(player1 = Player.new("\u2663"), player2 = Player.new("\u2665"), board = Board.new)
     @player1 = player1
     @player2 = player2
     @board = board
   end
 
   def valid_input?(input)
-    input.to_i.between?(1, 7) && (board.grid[input][input.to_i] == ' ')
+    input.to_i.between?(1, 7) && (board.grid[0][input.to_i - 1] == ' ')
   end
 
   def player_input
@@ -100,7 +100,7 @@ class ConnectFour
   def diagonal_win?(row, column, piece)
     left = left_diagonal_start(row, column)
     right = right_diagonal_start(row, column)
-    right_count = right_diagonal_count(right[:row], left[:column], piece)
+    right_count = right_diagonal_count(right[:row], right[:column], piece)
     left_count = left_diagonal_count(left[:row], left[:column], piece)
 
     right_count == 4 || left_count == 4
