@@ -59,11 +59,11 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     context 'if the column of the input value is full' do
       grid_val = [
         Array.new(7) { '@' },
-        Array.new(7) { '' },
-        Array.new(7) { '' },
-        Array.new(7) { '' },
-        Array.new(7) { '' },
-        Array.new(7) { '' }
+        Array.new(7) { ' ' },
+        Array.new(7) { ' ' },
+        Array.new(7) { ' ' },
+        Array.new(7) { ' ' },
+        Array.new(7) { ' ' }
       ]
       let(:player1) { double('player') }
       let(:player2) { double('player') }
@@ -115,7 +115,7 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     context 'when board is empty' do
       let(:player1) { double('player') }
       let(:player2) { double('player') }
-      grid_val = Array.new(6) { Array.new(7) { '' } }
+      grid_val = Array.new(6) { Array.new(7) { ' ' } }
       let(:board) { double('board', grid: grid_val) }
       subject(:game_coordinate) { described_class.new(player1, player2, board) }
 
@@ -139,9 +139,9 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
       let(:player1) { double('player') }
       let(:player2) { double('player') }
       grid_val = [
-        Array.new(7) { '' },
-        Array.new(7) { '' },
-        Array.new(7) { '' },
+        Array.new(7) { ' ' },
+        Array.new(7) { ' ' },
+        Array.new(7) { ' ' },
         Array.new(7) { '#' },
         Array.new(7) { '#' },
         Array.new(7) { '#' }
@@ -170,9 +170,9 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     let(:player1) { double('player') }
     let(:player2) { double('player') }
     grid_val = [
-      Array.new(7) { '' },
-      Array.new(7) { '' },
-      Array.new(7) { '' },
+      Array.new(7) { ' ' },
+      Array.new(7) { ' ' },
+      Array.new(7) { ' ' },
       ['#', '#', '#', '#', '@', '@', '@'],
       ['#', '@', '@', '@', '@', '#', '#'],
       ['@', '#', '@', '@', '#', '#', '#']
@@ -316,14 +316,14 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
         [
           ['X', 'X', 'X', 'X', 'X', 'X', '#'],
           ['X', 'X', 'X', 'X', 'X', '#', 'X'],
-          ['X', 'X', 'X', 'X', '#', 'X', 'X'],
-          ['X', 'X', 'X', '#', 'X', 'X', 'X'],
-          ['X', 'X', 'X', 'X', 'X', 'X', 'X'],
-          ['X', '#', 'X', 'X', 'X', 'X', 'X']
+          ['X', 'X', 'X', '#', '#', 'X', 'X'],
+          ['X', 'X', '#', 'X', 'X', 'X', 'X'],
+          ['X', '#', 'X', 'X', 'X', 'X', 'X'],
+          ['#', 'X', 'X', 'X', 'X', 'X', 'X']
         ]
       end
       it 'returns 4' do
-        result = game_status.right_diagonal_count(5, 1, '#')
+        result = game_status.right_diagonal_count(5, 0, '#')
         expect(result).to eql(4)
       end
     end
@@ -533,11 +533,11 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     context 'when its a tie' do
       grid_val = [
         Array.new(7) { '@' },
-        Array.new(7) { '' },
-        Array.new(7) { '' },
-        Array.new(7) { '' },
-        Array.new(7) { '' },
-        Array.new(7) { '' }
+        Array.new(7) { ' ' },
+        Array.new(7) { ' ' },
+        Array.new(7) { ' ' },
+        Array.new(7) { ' ' },
+        Array.new(7) { ' ' }
       ]
       let(:player1) { double('player') }
       let(:player2) { double('player') }
@@ -549,7 +549,7 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
     end
     context 'when its not a tie' do
       grid_val = [
-        Array.new(7) { '' },
+        Array.new(7) { ' ' },
         Array.new(7) { '@' },
         Array.new(7) { '@' },
         Array.new(7) { '@' },
@@ -563,6 +563,85 @@ describe ConnectFour do # rubocop:disable Metrics/BlockLength
       it 'returns false' do
         expect(game_state.tie?).to be(false)
       end
+    end
+  end
+
+  describe '#game_over?' do # rubocop:disable Metrics/BlockLength
+    context 'the game is over' do # rubocop:disable Metrics/BlockLength
+      it 'returns true if a player won' do
+        row = 3
+        column = 3
+        piece = '#'
+        allow(game).to receive(:player_win?).and_return(true)
+        allow(game).to receive(:tie?).and_return(false)
+        allow(game).to receive(:puts).with("player #{piece} won!")
+        result = game.game_over?(row, column, piece)
+        expect(result).to be(true)
+      end
+
+      it 'displays a message of who won if it is not a tie' do
+        row = 3
+        column = 3
+        piece = '#'
+        allow(game).to receive(:player_win?).and_return(true)
+        allow(game).to receive(:tie?).and_return(false)
+        expect(game).to receive(:puts).with("player #{piece} won!").once
+        game.game_over?(row, column, piece)
+      end
+
+      it 'returns true if its a tie' do
+        row = 3
+        column = 3
+        piece = '#'
+        allow(game).to receive(:player_win?).and_return(false)
+        allow(game).to receive(:tie?).and_return(true)
+        allow(game).to receive(:puts).with('its a tie!')
+        result = game.game_over?(row, column, piece)
+        expect(result).to be(true)
+      end
+
+      it 'displays a message if it is a tie' do
+        row = 3
+        column = 3
+        piece = '#'
+        allow(game).to receive(:player_win?).and_return(false)
+        allow(game).to receive(:tie?).and_return(true)
+        expect(game).to receive(:puts).with('its a tie!').once
+        game.game_over?(row, column, piece)
+      end
+    end
+
+    context 'when the game is not over' do
+      it 'returns false' do
+        row = 3
+        column = 3
+        piece = '#'
+        allow(game).to receive(:player_win?).and_return(false)
+        allow(game).to receive(:tie?).and_return(false)
+        result = game.game_over?(row, column, piece)
+        expect(result).to be(false)
+      end
+    end
+  end
+
+  describe '#play' do
+    let(:player1) { double('player', piece: '#') }
+    let(:player2) { double('player', piece: '@') }
+    let(:board) { double('board') }
+    subject(:game_test) { described_class.new(player1, player2, board) }
+    before do
+      allow(board).to receive(:show_board)
+      allow(game_test).to receive(:puts).with(anything)
+      allow(game_test).to receive(:player_input).and_return(3)
+      allow(game_test).to receive(:row).with(anything).and_return(3)
+      allow(game_test).to receive(:place_piece).with(anything, anything, anything)
+    end
+
+    it 'calls game_over? before switching players' do
+      allow(game_test).to receive(:game_over?).and_return(false, true)
+
+      expect(game_test).to receive(:game_over?).at_least(:once)
+      game_test.play
     end
   end
 end

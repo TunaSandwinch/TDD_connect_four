@@ -17,7 +17,8 @@ class Board
 
   def show_board
     system('clear') || system('cls') # Clears the terminal for a cleaner display
-
+    puts ''
+    puts ''
     @grid.each do |row|
       puts '| ' + row.join(' | ') + ' |'
     end
